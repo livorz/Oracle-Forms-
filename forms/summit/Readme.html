@@ -1,0 +1,168 @@
+<html>
+<head>
+<style>
+	body {margin:1cm;}
+	code, li span.code {font-family: Courier New, Courier, mono; font-size:90%;}
+	h1, h2, h3{font-family: Arial, Helvetica; padding-bottom:2px;margin-bottom:2px}
+	h1{font-size:120%;}
+	h2{font-size:110%;}
+	h3{font-size:100%;}
+	p, ol, ul, li{margin-top:0; padding-top:0;}
+</style>
+<title>Summit Application Setup</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+<h1>Summit Application Setup</h1>
+<p>This document explains how to install the Summit Application, and a description 
+  of the scenario used for testing. It is assumed that you are familiar with configuring 
+  Forms.</p>
+<h2>Setup the Development Environment</h2>
+<ol start=0>
+  <li>First, please make sure that the database version used is at least 10.2.0.4.0 or 11.1.0.7.0 so that the forms can be compiled successfully. For additional information on certification please consult:<br> <a href= "http://www.oracle.com/technology/software/products/ias/files/oracle%20fusion%20middleware%2011gr1%20(11%201%201%201%200)%20certification%20matrix.xls">"Oracle Fusion Middleware 11g Release 1 (11.1.1.1.0) Certification Matrix"</a></br>
+</li> 
+  <li>Expand the ZIP file. This document uses <span class="code">C:\summit</span> as the destination.<br>
+  </li>
+  <li>Create a user called SUMMIT in your database:<br>
+    <br>
+    <span class="code">SQL&gt; connect system/manager<br>
+    SQL&gt; create user summit identified by summit;<br>
+    SQL&gt; grant resource, connect to summit;</span><br>
+    <br>
+  </li>
+  <li>From the command line, import the Summit data:<br>
+    <br>
+    <span class="code">imp userid=summit/summit@&lt;connect_string&gt; 
+    file=summit.dmp full=y</span><br>
+    <br>
+  </li>
+  <li>Put <span class="code">C:\summit</span> in the FORMS_PATH in your .env file<br>
+  </li>
+  <li>Compile the application. The file GEN.BAT will generate the files under 
+    Microsoft Windows.</li>
+</ol>
+<h2>Setup the Runtime Environment<br>
+</h2>
+<ol>
+  <li> Add the following virtual directory to your web server configuration files. 
+    This example is for Apache and can be placed in HTTPD.CONF (located under: <ORACLE_HOME>\Middleware\as_1\ohs\conf).<br>
+    <br>
+    <span class="code">
+    Alias /summit/ &quot;C:\summit/&quot;</span><br>
+    <br>
+    <p>In Fusion Middleware 11g you need to set up a virtual directory in weblogic.xml (located under: <ORACLE_HOME>\Middleware\user_projects\domains\ClassicDomain\servers\WLS_FORMS\stage\formsapp\11.1.1\formsapp\formsweb.war\WEB-INF\)
+
+</p>
+<pre>&ltvirtual-directory-mapping&gt;
+    &ltlocal-path&gt;C:\summit&lt/local-path&gt;
+    &lturl-pattern&gt;summit/*&lt/url-pattern&gt;
+  &lt/virtual-directory-mapping&gt;</pre>
+  </li>
+  <li>If you want to start the application from a config section, add the following to your FORMSWEB.CFG file, and go to step 6. Otherwise go to 
+    step 3.<br>
+    <br>
+    <span class="code">[summit]<br>
+    archive=frmall.jar,RoundedButton.jar<br>
+    userid=summit/summit@&lt;connect_string&gt;<br>
+    form=customers<br>
+    pageTitle=Summit 11.1.1.1.0<br>
+    splashScreen=no<br>
+    imageBase=codeBase<br>
+    lookAndFeel=oracle<br>
+    separateFrame=false<br>
+    width=994<br>
+    height=582<br>
+    </span>
+    <br>
+    <p>Don't forget to replace &lt;connect_string&gt; with your connect string. You way also need to add the plugin variables to the summit config section so the correct plugin in picked up. The following is an example of how to get Sun's plug-in v1.6 to be picked up:</p>
+    <span class="code">
+	    baseHTMLjpi=basejpi.htm<br>
+	    jpi_classid=java:oracle.forms.engine.Main<br>
+	    jpi_mimetype=application/x-java-applet;version=1.6.0<br>
+    jpi_codebase=http://java.sun.com/products/plugin/autodl/jinstall-1_6_0-windows-i586.cab#Version=1,6,0,16
+</span><br>
+    <br>
+  </li>
+  <li>Add the RoundedButton.jar from the summit.zip file in the formsweb.cfg file as seen above.<br>
+    <br>
+  </li>
+  <li>Modify your registry file <span class="code">($ORACLE_HOME\Middleware\asinst_1\config\FormsComponent\forms\registry\oracle\forms\registry)</span> so that Forms can find the icons for the Summit application:<br>
+    <br>
+    <span class="code">default.icons.iconpath=summit/web</span><br>
+    <br>
+    </li>
+    <li>Copy the file RoundedButton.jar to the following location in <span class="code">$ORACLE_HOME/forms/java</span> so that Forms can find the jar file at runtime.<br>
+    </li>
+  <li> If it is not already there, add <span class="code">C:\summit</span> to your FORMS_PATH.
+  </li>
+  <li>Run the Form, either from the Builder or by adding <span class="code">config=summit</span> to theURL that starts Forms on the AS server.</li>
+<li> A typical URL should look like: <br>http://hostname:9001/forms/frmservlet?config=summit"</br></ol>
+<h2>Workload Scenario</h2>
+<p>The following two scenarios describe the workloads used during scalability 
+  testing. </p>
+<h3>Data Entry</h3>
+<ol>
+  <li>Locate the sales rep in the navigator tree of the customers.fmx form.</li>
+  <li>Choose different ordering of the customers by clicking on the name and phone 
+    button in the M/R-block.</li>
+  <li>Choose one customer in the navigator tree.</li>
+  <li>Verify address and phone number of the customer and quickly click through 
+    the other tabs of the customer detail block.</li>
+  <li>Double click on the customer to go to the ORDER.fmx form.
+  </li>
+  <li>Scroll through the first five orders using the cursor key.
+  </li>
+  <li>Press the &quot;create record&quot; key (CTRL-DOWN).
+  </li>
+  <li>Insert a new order.
+  </li>
+  <li>Insert a new item for this order, choosing it through the LOV on the product id item.
+  </li>
+  <li>Verify, that the product is on stock by clicking on the STOCK button and 
+    press EXECUTE QUERY key (CTRL-F11). Then close the STOCK window immediately.
+  </li>
+  <li>Do the same for three more items.
+  </li>
+  <li>Press the SAVE iconic button to save the order in the database.
+  </li>
+  <li>Now delete all the items, press the save key (CTRL-S), delete the order 
+    and press the save key again. (This is required so that we do not generate 
+    millions of orders during the performance tests).
+  </li>
+  <li>Now enter a new order with only three items following the same steps as 
+    above.
+  </li>
+  <li>Delete this order as well.
+  </li>
+  <li>Exit the order form.</li>
+</ol>
+<p>The scenario takes approximately 10 minutes. If an order entry is completed 
+  faster, wait until the 10 minutes were completed. This was done 3 times, so 
+  that the resulting script had a duration of 30 minutes.</p>
+<h3>Query</h3>
+<ol>
+  <li>Look for a sales person in the navigator tree.
+  </li>
+  <li>Order his customers using the buttons in the customer M/R block.
+  </li>
+  <li>Choose a customer in the navigator.
+  </li>
+  <li>Examine the customer detail information on each tab-folder.
+  </li>
+  <li>Do the above operation for 5 minutes with plenty time for reading through 
+    the information on the customer tab.
+  </li>
+  <li>After 5 minutes double click on a customer node in the navigator tree.
+  </li>
+  <li>For 5 minutes use different queries to select orders and scroll through 
+    the result sets.
+  </li>
+  <li>Take time to read the order and item information.
+  </li>
+  <li>Exit the order form.</li>
+</ol>
+<p>The above steps were performed for 30 minutes.</p>
+<p>&nbsp;</p>
+</body>
+</html>

@@ -1,0 +1,99 @@
+#
+# This is the Registry file.
+#
+# This file contains the logical [Java] Class name and an associated
+# [numerical] identifier that will be used to refer to objects of the
+# class in order to reduce the amount of information that needs to be
+# repeatedly transmitted to the client.
+#
+# This file is of the Form understood by java.util.Properties (for now)
+#
+# The System Level sound file is relative to the CODEBASE
+#
+#
+oracle.classById.1=oracle.forms.engine.Runform
+oracle.classById.4=oracle.forms.handler.FormWindow
+oracle.classById.5=oracle.forms.handler.AlertDialog
+oracle.classById.6=oracle.forms.handler.DisplayList
+oracle.classById.7=oracle.forms.handler.LogonDialog
+oracle.classById.8=oracle.forms.handler.DisplayErrorDialog
+oracle.classById.9=oracle.forms.handler.ListValuesDialog
+oracle.classById.10=oracle.forms.handler.EditorDialog
+oracle.classById.11=oracle.forms.handler.HelpDialog
+oracle.classById.12=oracle.forms.handler.FormStatusBar
+oracle.classById.13=oracle.forms.handler.MenuInfo
+# oracle.classById.14=UNUSED
+oracle.classById.15=oracle.forms.handler.ApplicationTimer
+oracle.classById.16=oracle.forms.handler.MenuParametersDialog
+oracle.classById.17=oracle.forms.handler.PromptListItem
+oracle.classById.18=oracle.forms.handler.CancelQueryDialog
+oracle.classById.257=oracle.forms.handler.TextFieldItem
+oracle.classById.258=oracle.forms.handler.TextAreaItem
+oracle.classById.259=oracle.forms.handler.FormCanvas
+oracle.classById.261=oracle.forms.handler.ButtonItem
+oracle.classById.262=oracle.forms.handler.CheckboxItem
+oracle.classById.263=oracle.forms.handler.PopListItem
+oracle.classById.264=oracle.forms.handler.TListItem
+oracle.classById.265=oracle.forms.handler.CfmVBX
+oracle.classById.266=oracle.forms.handler.CfmOLE
+oracle.classById.267=oracle.forms.handler.RadioButtonItem
+oracle.classById.268=oracle.forms.handler.ImageItem
+oracle.classById.269=oracle.forms.handler.IconicButtonItem
+oracle.classById.270=oracle.forms.handler.BlockScroller
+oracle.classById.271=oracle.forms.handler.JavaContainer
+oracle.classById.272=oracle.forms.handler.TabControl
+oracle.classById.273=oracle.forms.handler.ComboBoxItem
+oracle.classById.274=oracle.forms.handler.TreeItem
+oracle.classById.281=oracle.forms.handler.PopupHelpItem
+
+#
+# Defaults for the Font details, all names are Java Font names.  Each of
+# these parameters represents the default property to use when none is
+# specified.
+#
+# defaultFontname represents the default Java fontName.
+# defaultSize     represents the default fontSize.  Note that the size is
+#                 multiplied by 100 (e.g. a 10pt font has a size of 1000).
+# defaultStyle    represents the default fontStyle, PLAIN or ITALIC.
+# defaultWeight   represents the default fontWeight, PLAIN or BOLD.
+#
+default.fontMap.defaultFontname=Dialog
+default.fontMap.defaultSize=900
+default.fontMap.defaultStyle=PLAIN
+default.fontMap.defaultWeight=PLAIN
+
+#
+# Default Font Face mapping.
+#
+# appFontname  represents a comma delimited list of Application Font Names.
+# javaFontname represents a comma delimited list of Java Font Names.
+#
+# The number of entries in the appFontname list should match the number in
+# the javaFontname list.  The elements of the list are comma separated and
+# *all* characters are taken literally, leading and trailing spaces are
+# stripped from Face names.
+#
+# Note that this file uses the Java 1.1 Font names in order to be able to
+# handle the NLS Plane (BUG #431051)
+#
+default.fontMap.appFontnames=Courier New,Courier,courier,System,Terminal,Fixed,Fixedsys,Times,Times New Roman,MS Sans Serif,Arial
+default.fontMap.javaFontnames=MonoSpaced,MonoSpaced,MonoSpaced,Dialog,MonoSpaced,Dialog,Dialog,Serif,Serif,Dialog,SansSerif
+
+
+#
+# The Application Level icon files are relative to the DOCUMENTBASE
+#   example: icons/
+# or an absolute URL.
+#   example: http://www.forms.net/~luser/d2k_project/
+#
+default.icons.iconpath=summit/web/
+default.icons.iconextension=gif
+
+
+#
+# Application level settings to control UI features
+#
+app.ui.lovButtons=false
+app.ui.requiredFieldVA=false
+#    The background color is specified as an RGB triple.
+app.ui.requiredFieldVABGColor=255,0,0
